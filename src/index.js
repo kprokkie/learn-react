@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
+import * as Redux from 'redux';
+import * as ReactRedux from 'react-redux';
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
 import { shuffle, sample } from 'underscore';
@@ -57,19 +59,53 @@ function getTurnData(authors) {
     }
 }
 
-const state = {
-    turnData: getTurnData(authors),
-    highlight: ''
-};
+// function resetState() {
+//     return {
+//         turnData: getTurnData(authors),
+//         highlight: ''
+//     }
+// }
 
-function onAnswerSelected(answer) {
-    const isCorrect = state.turnData.author.books.some((book) => book === answer);
-    state.highlight = isCorrect ? 'correct' : 'wrong';
-    render();
+// let state = resetState();
+
+function reducer(state = { authors, turnData: getTurnData(authors), highlight: '' }, action) {
+    switch (action.type) {
+        case 'ANSWER_SELECTED':
+            const isCorrect = state.turnData.author.books.some((book) => book === action.answer);
+            return Object.assign({}, state, { highlight: isCorrect ? 'correct' : 'wrong' });
+        case 'CONTINUE':
+            return Object.assign({}, state, { highlight: '' }, { turnData: getTurnData(authors) });
+        default: return state;
+    }
 }
 
+
+let store = Redux.createStore(reducer);
+
+// function onAnswerSelected(answer) {
+//     const isCorrect = state.turnData.author.books.some((book) => book === answer);
+//     state.highlight = isCorrect ? 'correct' : 'wrong';
+//     render();
+// }
+
+// function App() {
+//     return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+// }
+
+// function App() {
+//     return (
+//         <ReactRedux.Provider store={store}>
+//             <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />
+//         </ReactRedux.Provider>
+//     );
+// }
+
 function App() {
-    return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+    return (
+        <ReactRedux.Provider store={store}>
+            <AuthorQuiz />
+        </ReactRedux.Provider>
+    );
 }
 
 function AddAuthorForm({ match }) {
@@ -88,18 +124,28 @@ function AddAuthorForm({ match }) {
 //     ReactDOM.render(<App />, document.getElementById('root'));
 // }
 
-function render() {
-    // ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />, document.getElementById('root'));
-    ReactDOM.render(
-        <BrowserRouter>
-            <React.Fragment>
-                <Route exact path="/" component={App}></Route>
-                <Route path="/add" component={AddAuthorForm}></Route>
-            </React.Fragment>
-        </BrowserRouter>,
-        document.getElementById('root'));
-}
-render();
+// function render() {
+//     // ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />, document.getElementById('root'));
+//     ReactDOM.render(
+//         <BrowserRouter>
+//             <React.Fragment>
+//                 <Route exact path="/" component={App}></Route>
+//                 <Route path="/add" component={AddAuthorForm}></Route>
+//             </React.Fragment>
+//         </BrowserRouter>,
+//         document.getElementById('root'));
+// }
+// render();
+
+ReactDOM.render(
+    <BrowserRouter>
+        <React.Fragment>
+            <Route exact path="/" component={App}></Route>
+            <Route path="/add" component={AddAuthorForm}></Route>
+        </React.Fragment>
+    </BrowserRouter>,
+    document.getElementById('root'));
+
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
