@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, withRouter } from 'react-router-dom';
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import './index.css';
 import AuthorQuiz from './AuthorQuiz';
+import AddAuthorForm from './AddAuthorForm';
 import { shuffle, sample } from 'underscore';
 import * as serviceWorker from './serviceWorker';
 
@@ -108,14 +109,14 @@ function App() {
     );
 }
 
-function AddAuthorForm({ match }) {
-    return (
-        <div>
-            <h1>Author Form</h1>
-            <p>{JSON.stringify(match)}</p>
-        </div>
-    );
-}
+// function AddAuthorForm({ match }) {
+//     return (
+//         <div>
+//             <h1>Author Form</h1>
+//             <p>{JSON.stringify(match)}</p>
+//         </div>
+//     );
+// }
 
 // application rendered
 // ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />, document.getElementById('root'));
@@ -137,11 +138,27 @@ function AddAuthorForm({ match }) {
 // }
 // render();
 
+// function AddAuthorFormWrapper () {
+//     return(
+//         // <AddAuthorForm onAddAuthor={console.log}></AddAuthorForm>
+//         <AddAuthorForm onAddAuthor={(author) => {
+//             authors.push(author);
+//         }}></AddAuthorForm>
+//     );
+// }
+
+const AddAuthorFormWrapper = withRouter(({ history }) =>
+    <AddAuthorForm onAddAuthor={(author) => {
+        authors.push(author);
+        history.push('/');
+    }}></AddAuthorForm>
+);
+
 ReactDOM.render(
     <BrowserRouter>
         <React.Fragment>
             <Route exact path="/" component={App}></Route>
-            <Route path="/add" component={AddAuthorForm}></Route>
+            <Route path="/add" component={AddAuthorFormWrapper}></Route>
         </React.Fragment>
     </BrowserRouter>,
     document.getElementById('root'));

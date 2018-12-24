@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+// import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -61,8 +62,19 @@ Turn.propTypes = {
   highlight: PropTypes.string.isRequired
 };
 
-function Continue() {
-  return (<div />);
+// function Continue() {
+//   return (<div />);
+// }
+
+function Continue({ show, onContinue }) {
+  return (
+    <div className="row continue">
+      {show ? 
+        <div className="col-11">
+          <button className="btn btn-primary btn-lg" onClick={onContinue}>Continue</button>
+        </div> : null
+      }
+    </div>);
 }
 
 function Footer() {
@@ -94,13 +106,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 const AuthorQuiz = connect(mapStateToProps, mapDispatchToProps)(
-  function ({ turnData, highlight, onAnswerSelected }) {
+  function ({ turnData, highlight, onAnswerSelected, onContinue }) {
     console.log(turnData);
     return (
       <div className="container-fluid">
         <Hero />
         <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
-        <Continue />
+        <Continue show={highlight === 'correct'} onContinue={onContinue}/>
         <p><Link to="/add">Add Author</Link></p>
         <Footer />
       </div>
