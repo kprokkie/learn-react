@@ -76,6 +76,10 @@ function reducer(state = { authors, turnData: getTurnData(authors), highlight: '
             return Object.assign({}, state, { highlight: isCorrect ? 'correct' : 'wrong' });
         case 'CONTINUE':
             return Object.assign({}, state, { highlight: '' }, { turnData: getTurnData(authors) });
+        case 'ADD_AUTHOR':
+            return Object.assign({}, state, {
+                authors: state.authors.concat([action.author])
+            });
         default: return state;
     }
 }
@@ -101,13 +105,19 @@ let store = Redux.createStore(reducer);
 //     );
 // }
 
-function App() {
-    return (
-        <ReactRedux.Provider store={store}>
-            <AuthorQuiz />
-        </ReactRedux.Provider>
-    );
-}
+// function App() {
+//     return (
+//         <ReactRedux.Provider store={store}>
+//             <AuthorQuiz />
+//         </ReactRedux.Provider>
+//     );
+// }
+
+// function App() {
+//     return (
+//         <AuthorQuiz />
+//     );
+// }
 
 // function AddAuthorForm({ match }) {
 //     return (
@@ -147,19 +157,25 @@ function App() {
 //     );
 // }
 
-const AddAuthorFormWrapper = withRouter(({ history }) =>
-    <AddAuthorForm onAddAuthor={(author) => {
-        authors.push(author);
-        history.push('/');
-    }}></AddAuthorForm>
-);
+// const AddAuthorFormWrapper = withRouter(({ history }) =>
+//     <AddAuthorForm onAddAuthor={(author) => {
+//         authors.push(author);
+//         history.push('/');
+//     }}></AddAuthorForm>
+// );
+
+// const AddAuthorFormWrapper = withRouter(({ history }) =>
+//     <AddAuthorForm></AddAuthorForm>
+// );
 
 ReactDOM.render(
     <BrowserRouter>
-        <React.Fragment>
-            <Route exact path="/" component={App}></Route>
-            <Route path="/add" component={AddAuthorFormWrapper}></Route>
-        </React.Fragment>
+        <ReactRedux.Provider store={store}>
+            <React.Fragment>
+                <Route exact path="/" component={AuthorQuiz}></Route>
+                <Route path="/add" component={AddAuthorForm}></Route>
+            </React.Fragment>
+        </ReactRedux.Provider>
     </BrowserRouter>,
     document.getElementById('root'));
 
