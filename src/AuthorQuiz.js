@@ -69,7 +69,7 @@ Turn.propTypes = {
 function Continue({ show, onContinue }) {
   return (
     <div className="row continue">
-      {show ? 
+      {show ?
         <div className="col-11">
           <button className="btn btn-primary btn-lg" onClick={onContinue}>Continue</button>
         </div> : null
@@ -107,12 +107,11 @@ function mapDispatchToProps(dispatch) {
 
 const AuthorQuiz = connect(mapStateToProps, mapDispatchToProps)(
   function ({ turnData, highlight, onAnswerSelected, onContinue }) {
-    console.log(turnData);
     return (
       <div className="container-fluid">
         <Hero />
         <Turn {...turnData} highlight={highlight} onAnswerSelected={onAnswerSelected} />
-        <Continue show={highlight === 'correct'} onContinue={onContinue}/>
+        <Continue show={highlight === 'correct'} onContinue={onContinue} />
         <p><Link to="/add">Add Author</Link></p>
         <Footer />
       </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, withRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
 import './index.css';
@@ -77,9 +77,7 @@ function reducer(state = { authors, turnData: getTurnData(authors), highlight: '
         case 'CONTINUE':
             return Object.assign({}, state, { highlight: '' }, { turnData: getTurnData(authors) });
         case 'ADD_AUTHOR':
-            return Object.assign({}, state, {
-                authors: state.authors.concat([action.author])
-            });
+            return Object.assign({}, state, { authors: state.authors.concat([action.author]) });
         default: return state;
     }
 }
