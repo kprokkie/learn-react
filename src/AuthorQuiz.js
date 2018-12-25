@@ -1,12 +1,29 @@
+// react
 import React from 'react';
-// import React, { Component } from 'react';
+// react props typing
 import PropTypes from 'prop-types';
+// react routing
 import { Link } from 'react-router-dom';
+// redux store
 import { connect } from 'react-redux';
-//import logo from './logo.svg';
-import './bootstrap.min.css';
-import './App.css';
 
+// component css
+import './AddAuthorForm.css';
+
+// React Object Typing
+Turn.propTypes = {
+  author: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    imageSrc: PropTypes.string.isRequired,
+    books: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }),
+  books: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onAnswerSelected: PropTypes.func.isRequired,
+  highlight: PropTypes.string.isRequired
+};
+
+// React Component [local]
 function Hero() {
   return (
     <div className="row">
@@ -18,6 +35,7 @@ function Hero() {
   );
 }
 
+// React Component [local]
 function Book({ title, onClick }) {
   return (
     <div className="answer" onClick={() => { onClick(title); }}>
@@ -26,7 +44,9 @@ function Book({ title, onClick }) {
   );
 }
 
+// React Component [local]
 function Turn({ author, books, highlight, onAnswerSelected }) {
+
   function highlightBgColor(highlight) {
     const mapping = {
       'none': '',
@@ -43,29 +63,13 @@ function Turn({ author, books, highlight, onAnswerSelected }) {
         <span>{author.name}</span>
       </div>
       <div className="col-6">
-        {/* {books.map((title) => <p>{title}</p>)} */}
         {books.map((title) => <Book title={title} key={title} onClick={onAnswerSelected} />)}
       </div>
     </div>
   );
 }
 
-Turn.propTypes = {
-  author: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    imageUrl: PropTypes.string.isRequired,
-    imageSrc: PropTypes.string.isRequired,
-    books: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }),
-  books: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onAnswerSelected: PropTypes.func.isRequired,
-  highlight: PropTypes.string.isRequired
-};
-
-// function Continue() {
-//   return (<div />);
-// }
-
+// React Component [local]
 function Continue({ show, onContinue }) {
   return (
     <div className="row continue">
@@ -74,9 +78,11 @@ function Continue({ show, onContinue }) {
           <button className="btn btn-primary btn-lg" onClick={onContinue}>Continue</button>
         </div> : null
       }
-    </div>);
+    </div>
+  );
 }
 
+// React Component [local]
 function Footer() {
   return (
     <div id="footer" className="row">
@@ -87,6 +93,7 @@ function Footer() {
   );
 }
 
+// Store (state => props)
 function mapStateToProps(state) {
   return {
     turnData: state.turnData,
@@ -94,6 +101,7 @@ function mapStateToProps(state) {
   }
 }
 
+// Store (dispatch => props)
 function mapDispatchToProps(dispatch) {
   return {
     onAnswerSelected: (answer) => {
@@ -105,6 +113,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
+// Connect react compoent to redux store
 const AuthorQuiz = connect(mapStateToProps, mapDispatchToProps)(
   function ({ turnData, highlight, onAnswerSelected, onContinue }) {
     return (
@@ -117,18 +126,5 @@ const AuthorQuiz = connect(mapStateToProps, mapDispatchToProps)(
       </div>
     );
   });
-
-// class AuthorQuiz extends Component {
-//   render() { 
-//     return (
-//       <div className="container-fluid">
-//         <Hero />
-//         <Turn />
-//         <Continue />
-//         <Footer/>
-//       </div>
-//     );
-//   }
-// }
 
 export default AuthorQuiz;

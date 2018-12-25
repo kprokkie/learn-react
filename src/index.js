@@ -1,16 +1,29 @@
+// react
 import React from 'react';
 import ReactDOM from 'react-dom';
+// react routing
 import { BrowserRouter, Route } from 'react-router-dom';
+// redux store
 import * as Redux from 'redux';
 import * as ReactRedux from 'react-redux';
-import './index.css';
-import AuthorQuiz from './AuthorQuiz';
-import AddAuthorForm from './AddAuthorForm';
-import { shuffle, sample } from 'underscore';
+// service worker
 import * as serviceWorker from './serviceWorker';
 
-// aplication data
+// help js libraries
+// underscore
+import { shuffle, sample } from 'underscore';
 
+// help css libraries
+// bootstrap css
+import './bootstrap.min.css';
+// app global css
+import './index.css';
+
+// component injection
+import AuthorQuiz from './AuthorQuiz';
+import AddAuthorForm from './AddAuthorForm';
+
+// aplication data
 const authors = [
     {
         name: 'Rokkie 1',
@@ -38,13 +51,10 @@ const authors = [
     }
 ];
 
-// const state = {
-//     turnData: {
-//         author: authors[0],
-//         books: authors[0].books
-//     }
-// };
-
+/**
+ * Get author & set of books
+ * @param {authors} - list of authors 
+ */
 function getTurnData(authors) {
     const allBooks = authors.reduce(function (p, c, i) {
         return p.concat(c.books);
@@ -60,15 +70,7 @@ function getTurnData(authors) {
     }
 }
 
-// function resetState() {
-//     return {
-//         turnData: getTurnData(authors),
-//         highlight: ''
-//     }
-// }
-
-// let state = resetState();
-
+// store reducer 
 function reducer(state = { authors, turnData: getTurnData(authors), highlight: '' }, action) {
     switch (action.type) {
         case 'ANSWER_SELECTED':
@@ -82,90 +84,13 @@ function reducer(state = { authors, turnData: getTurnData(authors), highlight: '
     }
 }
 
-
+// redux store
 let store = Redux.createStore(reducer);
 
-// function onAnswerSelected(answer) {
-//     const isCorrect = state.turnData.author.books.some((book) => book === answer);
-//     state.highlight = isCorrect ? 'correct' : 'wrong';
-//     render();
-// }
-
-// function App() {
-//     return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
-// }
-
-// function App() {
-//     return (
-//         <ReactRedux.Provider store={store}>
-//             <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />
-//         </ReactRedux.Provider>
-//     );
-// }
-
-// function App() {
-//     return (
-//         <ReactRedux.Provider store={store}>
-//             <AuthorQuiz />
-//         </ReactRedux.Provider>
-//     );
-// }
-
-// function App() {
-//     return (
-//         <AuthorQuiz />
-//     );
-// }
-
-// function AddAuthorForm({ match }) {
-//     return (
-//         <div>
-//             <h1>Author Form</h1>
-//             <p>{JSON.stringify(match)}</p>
-//         </div>
-//     );
-// }
-
-// application rendered
-// ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />, document.getElementById('root'));
-
-// function render() {
-//     ReactDOM.render(<App />, document.getElementById('root'));
-// }
-
-// function render() {
-//     // ReactDOM.render(<AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />, document.getElementById('root'));
-//     ReactDOM.render(
-//         <BrowserRouter>
-//             <React.Fragment>
-//                 <Route exact path="/" component={App}></Route>
-//                 <Route path="/add" component={AddAuthorForm}></Route>
-//             </React.Fragment>
-//         </BrowserRouter>,
-//         document.getElementById('root'));
-// }
-// render();
-
-// function AddAuthorFormWrapper () {
-//     return(
-//         // <AddAuthorForm onAddAuthor={console.log}></AddAuthorForm>
-//         <AddAuthorForm onAddAuthor={(author) => {
-//             authors.push(author);
-//         }}></AddAuthorForm>
-//     );
-// }
-
-// const AddAuthorFormWrapper = withRouter(({ history }) =>
-//     <AddAuthorForm onAddAuthor={(author) => {
-//         authors.push(author);
-//         history.push('/');
-//     }}></AddAuthorForm>
-// );
-
-// const AddAuthorFormWrapper = withRouter(({ history }) =>
-//     <AddAuthorForm></AddAuthorForm>
-// );
-
+// React Core Implementation
+// React Rendering
+// React Store
+// React Routing
 ReactDOM.render(
     <BrowserRouter>
         <ReactRedux.Provider store={store}>

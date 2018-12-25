@@ -1,8 +1,14 @@
+// react
 import React from 'react';
+// redux store
 import { connect } from 'react-redux';
+// react routing
 import { withRouter } from 'react-router-dom';
+
+// component css
 import './AddAuthorForm.css';
 
+// React Component
 class AuthorForm extends React.Component {
     constructor(props) {
         super(props);
@@ -30,7 +36,6 @@ class AuthorForm extends React.Component {
             books: this.state.books.concat([this.state.tempBook]),
             tempBook: ''
         });
-        // this.state.books.push(this.state.tempBook);
     }
     render() {
         return (
@@ -55,6 +60,7 @@ class AuthorForm extends React.Component {
     }
 }
 
+// React Component Wrapper
 function AddAuthorForm({ match, onAddAuthor }) {
     return (
         <div className="author-form">
@@ -65,10 +71,12 @@ function AddAuthorForm({ match, onAddAuthor }) {
     );
 }
 
+// Store (state => props)
 function mapStateToProps(state) {
     return {}
 }
 
+// Store (dispatch => props)
 function mapDispatchToProps(dispatch, props) {
     return {
         onAddAuthor: (author) => {
@@ -78,4 +86,5 @@ function mapDispatchToProps(dispatch, props) {
     };
 }
 
+// Connect react compoent to redux store
 export default withRouter(connect(() => mapStateToProps, mapDispatchToProps)(AddAuthorForm));
